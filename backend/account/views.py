@@ -10,15 +10,19 @@ class Register(generics.CreateAPIView):
     serializer_class = UserRegisterSerializer
 
     def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
+        serializer = UserRegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.create()
+            tokens = self.get_tokens_for_user(user)
 
-        if response.status_code == status.HTTP_201_CREATED:
-            user = User.objects.get(username=request.data['username'])  
-            refresh = RefreshToken.for_user(user)
-            token = {
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-            }
-            response.data['token'] = token
+            return Response({'success': True,'tokens': tokens})
+            
+        return Response({'success': False})   
 
-        return response
+    def get_tokens_for_user(self,user):
+        refresh = RefreshToken.for_user(user)
+
+        return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }

@@ -1,0 +1,9 @@
+[MASTER]
+init-hook='import sys; sys.path.append("social-media-project")'
+
+[MESSAGES CONTROL]
+disable=
+    missing-docstring, missing-class-docstring,
+
+[FORMAT]
+max-line-length=120

@@ -1,11 +1,12 @@
-from django.contrib.auth.models import User
-from django.shortcuts import render
-from .serializers import UserRegisterSerializer
-from rest_framework import generics, status
+from rest_framework import generics
+from rest_framework import serializers
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
+from .serializers import UserRegisterSerializer
 
-class Register(generics.CreateAPIView):
+class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
 
@@ -14,10 +15,8 @@ class Register(generics.CreateAPIView):
         if serializer.is_valid():
             user = serializer.create()
             tokens = self.get_tokens_for_user(user)
-
-            return Response({'success': True,'tokens': tokens})
-            
-        return Response({'success': False})   
+            return Response(tokens, status=status.HTTP_201_CREATED)
+        raise serializers.ValidationError({ 'errors': serializer.errors})
 
     def get_tokens_for_user(self,user):
         refresh = RefreshToken.for_user(user)

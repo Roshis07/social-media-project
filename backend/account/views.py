@@ -5,8 +5,6 @@ from rest_framework import generics, serializers, status
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .serializers import UserRegisterSerializer
-
-
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
@@ -26,11 +24,3 @@ class RegisterView(generics.CreateAPIView):
         'refresh': str(refresh),
         'access': str(refresh.access_token),
     }
-
-@api_view(['POST'])
-def custom_logout(request):
-    try:
-        request.auth.delete()  # Invalidate the token
-    except AttributeError:
-        pass  # If the token is not present, do nothing
-    return Response({'detail': 'Successfully logged out.'})

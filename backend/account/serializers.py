@@ -2,7 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 
-class UserRegisterSerializer(serializers.ModelSerializer):
+# pylint: disable=too-few-public-methods
+class RegisterSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(style={'input_type':'password',} ,write_only=True)
 
     class Meta:

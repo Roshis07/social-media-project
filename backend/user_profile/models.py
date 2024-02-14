@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class UserProfile(models.Model): 
+class UserProfile(models.Model):
    # this is user personal profile so not available any one to edit except view and read only
    #getting first name and last name and email from the register
    # model & and nickname as username as well but if only true

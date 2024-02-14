@@ -27,6 +27,7 @@ jobs:
         run: |
           cd backend
           pylint core account
+          pylint core user_profile
 
   frontend-linting:
     runs-on: ubuntu-latest

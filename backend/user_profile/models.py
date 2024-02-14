@@ -24,12 +24,5 @@ class UserProfile(models.Model):
     country=models.CharField(max_length=20, blank=True)
     # photo featured
     # connections
-    # friends/ following
-    
-    
-
-    
-    
-    
-    
+    # friends/ followinggit  
     

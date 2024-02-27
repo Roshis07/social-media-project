@@ -1,3 +1,7 @@
-#from django.contrib import admin
+from django.contrib import admin
+from .models import UserProfile
 
-# Register your models here.
+class UserProfileAdmin(admin.ModelAdmin):
+    pass  # Empty class definition
+
+admin.site.register(UserProfile, UserProfileAdmin)

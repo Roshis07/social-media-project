@@ -1,24 +1,16 @@
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated  # Import for authentication
-from .models import UserProfile
-from .serializers import UserProfileSerializer
+from rest_framework import generics, permissions
 
-class UserProfileList(generics.ListCreateAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileSerializer
-    permission_classes = [IsAuthenticated] 
-    
-    def get_queryset(self):
-        return UserProfile.objects.filter(user=self.request.user)# Ensure user is authenticated
+from .models import Profile
+from .serializers import ProfileSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)  # Set the user of UserProfile to the currently logged-in user
 
-class UserProfileDetail(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = UserProfileSerializer
-    permission_classes = [IsAuthenticated]
-    lookup_field = 'user__username'
+class ProfileDetailView(generics.RetrieveAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-    def get_queryset(self):
-        return UserProfile.objects.filter(user=self.request.user)
-    
+    def get_object(self):
+        user_profile, _ = Profile.objects.get_or_create(user=self.request.user)
+        return user_profile
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
